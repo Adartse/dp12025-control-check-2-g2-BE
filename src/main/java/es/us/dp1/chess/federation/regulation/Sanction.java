@@ -12,7 +12,7 @@ public class Sanction{
 
     String description;
 
-    double monetaryFine;
+    Double monetaryFine;
 
     SanctionType type;
 

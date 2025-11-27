@@ -9,8 +9,4 @@ public interface RefereeRepository {
 
     Optional<Referee> findById(Integer id);
 
-    Referee save(Referee referee);
-
-    
-
 }

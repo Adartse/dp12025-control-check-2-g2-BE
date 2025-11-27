@@ -25,13 +25,4 @@ public class RefereeService {
         return refereeRepository.findById(id).orElse(null);
     }
 
-    @Transactional
-    Referee save(Referee referee) {
-        return refereeRepository.save(referee);
-    }
-
-
-
-
-
 }

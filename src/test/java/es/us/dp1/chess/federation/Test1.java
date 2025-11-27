@@ -26,9 +26,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotNull;
 
 @DataJpaTest
 public class Test1 extends ReflexiveTest{
@@ -42,12 +39,8 @@ public class Test1 extends ReflexiveTest{
     @Autowired
     EntityManager em;
 
-
-
-
-
-    // ANNOTATIONS CHECK ------------------------------------------------------------
-
+    // --------------------------------------------------------------------------------
+    
     @Test
     public void test1CheckRefereeAnnotations() throws NoSuchFieldException, SecurityException {
         assertTrue(classIsAnnotatedWith(Referee.class,Entity.class));        
@@ -59,17 +52,11 @@ public class Test1 extends ReflexiveTest{
 
     // --------------------------------------------------------------------------------
 
-    // REPOSITORY CHECK ---------------------------------------------------------------
-
     @Test
-    public void test1RefereeRepositoryExist() {
+    public void test1CheckRepositoriesExist() {
         assertNotNull(refereeRepository, "The Referee repository was not injected into the tests, its autowired value was null.");
-        test1RefereeRepositoryContainsMethod();
-    }
-
-    @Test
-    public void test1SanctionRepositoryExist() {
         assertNotNull(sanctionRepository, "The Sanction repository was not injected into the tests, its autowired value was null.");
+        test1RefereeRepositoryContainsMethod();
         test1SanctionRepositoryContainsMethod();
     }
 
@@ -93,14 +80,12 @@ public class Test1 extends ReflexiveTest{
 
     // --------------------------------------------------------------------------------
 
-    // PERSISTENCE CONSTRAINTS CHECK --------------------------------------------------
     @Test
     public void test1CheckRefereeContraints() {
 
         Map<String, List<Object>> invalidValues = Map.of(
-            "name", List.of(null, "", "Jo", "En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda."),
-            "licenseNumber", List.of(null, "123456789", "12345678901", "          "),
-            "certificationDate", List.of(null)
+            "name", List.of("", "Jo", "En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda."),
+            "licenseNumber", List.of("123456789", "12345678901", "          ")
         );
 
         Referee r = createValidReferee(em);
@@ -114,9 +99,8 @@ public class Test1 extends ReflexiveTest{
     public void test1CheckSanctionConstraints() {
 
         Map<String, List<Object>> invalidValues = Map.of(
-            "description", List.of(null, "Texto corto", "Esta descripción es tan larga que supera ampliamente los setenta caracteres permitidos en la regla."),
-            "type", List.of(null),
-            "monetaryFine", List.of(-1.0, 0.0, null)
+            "description", List.of("                    ", "Texto corto", "Esta descripción es tan larga que supera ampliamente los setenta caracteres permitidos en la regla."),
+            "monetaryFine", List.of(-1.0, 0.0)
         );
 
         Sanction s = createValidSanction(em);
@@ -125,14 +109,8 @@ public class Test1 extends ReflexiveTest{
         checkThatFieldsAreMandatory(s, em, "description", "type");
         checkThatValuesAreNotValid(s, invalidValues, em);
     }
+
     // --------------------------------------------------------------------------------
-
-
-
-
-
-
-    // OBJECT FACTORIES ------------------------------------------------
 
     public static Referee createValidReferee(EntityManager em) {
         Referee r = new Referee();
@@ -186,7 +164,7 @@ public class Test1 extends ReflexiveTest{
         Sanction s = new Sanction();
         s.setDescription("Suspensión de 3 años por uso de dispositivo electrónico.");
         s.setType(SanctionType.PENALTY_TIME);
-        s.setMonetaryFine(500.0);
+        s.setMonetaryFine(0.01);
         s.setImposedBy(createValidReferee(em));
         s.setImposedOn(createValidParticipant("Kirill Shevchenko"));
         s.setRuleBroken(createValidRule());
