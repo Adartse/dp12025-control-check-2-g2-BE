@@ -101,7 +101,7 @@ m2=1
 ruleBroken
 fg=red
 m1=1..n
-m2=1
+m2=0..1
 </panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>Relation</id><coordinates><x>357</x><y>629</y><w>714</w><h>136</h></coordinates><panel_attributes>lt=&lt;-
 federation
 fg=blue
