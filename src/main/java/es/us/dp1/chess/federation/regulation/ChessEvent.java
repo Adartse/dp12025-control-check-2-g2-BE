@@ -8,7 +8,9 @@ import es.us.dp1.chess.federation.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +27,13 @@ public class ChessEvent extends NamedEntity {
     EventCategory category;
 
     @ManyToMany
-    List<User> participants;
+    List<User> participant;
+
+    @ManyToMany
+    List<Rule> applies;
+
+    @ManyToOne
+    @JoinColumn(name = "federation_id")
+    Federation organizedBy;
 
 }

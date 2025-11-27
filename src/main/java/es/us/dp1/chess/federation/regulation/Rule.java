@@ -5,6 +5,8 @@ import java.util.List;
 import es.us.dp1.chess.federation.model.NamedEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,8 +24,9 @@ public class Rule extends NamedEntity {
     @NotNull
     private boolean active;
 
-    @ManyToMany
-    List<ChessEvent> appliedRules;
+    @ManyToOne
+    @NotNull
+    Federation federation;
     
 
 }

@@ -127,17 +127,15 @@ public class Test1 extends ReflexiveTest{
         f.setName("Federación Internacional de Ajedrez");
         f.setDescription("Es una organización internacional que agrupa las diversas federaciones nacionales de ajedrez. ");
         f.setFoundationalDate(LocalDate.of(1924, 7, 20));
-        f.setOfficialRule(List.of(createValidRule()));
-        f.setOrganizes(null);
         return f;
     }
 
-    public static Rule createValidRule() {
+    public static Rule createValidRule(String ruleName) {
         Rule rule = new Rule();
-        rule.setName("Artículo 1 - 1.4 - Naturaleza y objetivo de la partida de ajedrez");
+        rule.setName(ruleName);
         rule.setDescription("El objetivo de cada jugador es situar al rey adversario bajo ataque, de tal forma que el adversario no disponga de ninguna jugada legal.");
         rule.setActive(true);
-        rule.setAppliedRules(List.of(createValidChessEvent()));
+        rule.setFederation(createValidFederation());
 
         return rule;
     }   
@@ -147,7 +145,8 @@ public class Test1 extends ReflexiveTest{
         e.setName("Campeonato Mundial de Ajedrez 2025");
         e.setDate(LocalDate.of(2025, 12, 9));
         e.setCategory(EventCategory.WORLD);
-        e.setParticipants(List.of(createValidParticipant("Magnus Carlsen"), createValidParticipant("Ian Nepomniachtchi")));
+        e.setParticipant(List.of(createValidParticipant("Magnus Carlsen"), createValidParticipant("Ian Nepomniachtchi")));
+        e.setApplies(List.of());
         return e;
     }
 
@@ -166,8 +165,8 @@ public class Test1 extends ReflexiveTest{
         s.setType(SanctionType.PENALTY_TIME);
         s.setMonetaryFine(0.01);
         s.setImposedBy(createValidReferee(em));
-        s.setImposedOn(createValidParticipant("Kirill Shevchenko"));
-        s.setRuleBroken(createValidRule());
+        s.setImposedOn(createValidParticipant("Judit Polgar"));
+        s.setRuleBroken(createValidRule("Uso de Dispositivos Electrónicos"));
         return s;
     }
 
