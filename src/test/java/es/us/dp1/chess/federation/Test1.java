@@ -116,26 +116,27 @@ public class Test1 extends ReflexiveTest{
         Referee r = new Referee();
         r.setLicenseNumber("ABCD123456");
         r.setCertificationDate(LocalDate.of(2023, 1, 1));
-        r.setCertifiedBy(createValidFederation());
+        r.setCertifiedBy(createValidFederation(em));
         r.setAssignedTo(List.of(createValidChessEvent()));
         return r;
     }
 
-    public static Federation createValidFederation() {
+    public static Federation createValidFederation(EntityManager em) {
         Federation f = new Federation();
         f.setAcronym("FIDE");
         f.setName("Federación Internacional de Ajedrez");
         f.setDescription("Es una organización internacional que agrupa las diversas federaciones nacionales de ajedrez. ");
         f.setFoundationalDate(LocalDate.of(1924, 7, 20));
+        em.persist(f);
         return f;
     }
 
-    public static Rule createValidRule(String ruleName) {
+    public static Rule createValidRule(EntityManager em, String ruleName) {
         Rule rule = new Rule();
         rule.setName(ruleName);
         rule.setDescription("El objetivo de cada jugador es situar al rey adversario bajo ataque, de tal forma que el adversario no disponga de ninguna jugada legal.");
         rule.setActive(true);
-        rule.setFederation(createValidFederation());
+        rule.setFederation(createValidFederation(em));
 
         return rule;
     }   
@@ -166,7 +167,7 @@ public class Test1 extends ReflexiveTest{
         s.setMonetaryFine(0.01);
         s.setImposedBy(createValidReferee(em));
         s.setImposedOn(createValidParticipant("Judit Polgar"));
-        s.setRuleBroken(createValidRule("Uso de Dispositivos Electrónicos"));
+        s.setRuleBroken(createValidRule(em, "Uso de Dispositivos Electrónicos"));
         return s;
     }
 
