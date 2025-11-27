@@ -1,10 +1,7 @@
 package es.us.dp1.chess.federation.regulation;
 
-import java.util.List;
-
 import es.us.dp1.chess.federation.model.NamedEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 import jakarta.validation.constraints.NotBlank;
