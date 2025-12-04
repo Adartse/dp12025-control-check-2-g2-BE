@@ -28,7 +28,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 
 @DataJpaTest
-public class Test1 extends ReflexiveTest{
+public class Test1a extends ReflexiveTest{
 
     @Autowired(required = false)
     RefereeRepository refereeRepository;
@@ -42,25 +42,25 @@ public class Test1 extends ReflexiveTest{
     // --------------------------------------------------------------------------------
     
     @Test
-    public void test1CheckRefereeAnnotations() throws NoSuchFieldException, SecurityException {
+    public void test1ACheckRefereeAnnotations() throws NoSuchFieldException, SecurityException {
         assertTrue(classIsAnnotatedWith(Referee.class,Entity.class));        
     }
     @Test
-    public void test1CheckSanctionAnnotations() throws NoSuchFieldException, SecurityException {
+    public void test1ACheckSanctionAnnotations() throws NoSuchFieldException, SecurityException {
         assertTrue(classIsAnnotatedWith(Sanction.class,Entity.class));        
     }    
 
     // --------------------------------------------------------------------------------
 
     @Test
-    public void test1CheckRepositoriesExist() {
+    public void test1ACheckRepositoriesExist() {
         assertNotNull(refereeRepository, "The Referee repository was not injected into the tests, its autowired value was null.");
         assertNotNull(sanctionRepository, "The Sanction repository was not injected into the tests, its autowired value was null.");
-        test1RefereeRepositoryContainsMethod();
-        test1SanctionRepositoryContainsMethod();
+        test1ARefereeRepositoryContainsMethod();
+        test1ASanctionRepositoryContainsMethod();
     }
 
-    public void test1RefereeRepositoryContainsMethod() {
+    public void test1ARefereeRepositoryContainsMethod() {
         if (refereeRepository != null) {
             Object v = refereeRepository.findById(999);
             assertFalse(v != null && ((Optional<?>) v).isPresent(), //* */
@@ -69,7 +69,7 @@ public class Test1 extends ReflexiveTest{
             fail("The Sanction repository was not injected into the tests, its autowired value was null");
     }
 
-    public void test1SanctionRepositoryContainsMethod() {
+    public void test1ASanctionRepositoryContainsMethod() {
         if (sanctionRepository != null) {
             Object v = sanctionRepository.findById(999);
             assertFalse(v != null && ((Optional<?>) v).isPresent(),     //* */
@@ -81,7 +81,7 @@ public class Test1 extends ReflexiveTest{
     // --------------------------------------------------------------------------------
 
     @Test
-    public void test1CheckRefereeContraints() {
+    public void test1ACheckRefereeContraints() {
 
         Map<String, List<Object>> invalidValues = Map.of(
             "name", List.of("", "Jo", "En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda."),
@@ -96,7 +96,7 @@ public class Test1 extends ReflexiveTest{
     }
 
     @Test
-    public void test1CheckSanctionConstraints() {
+    public void test1ACheckSanctionConstraints() {
 
         Map<String, List<Object>> invalidValues = Map.of(
             "description", List.of("                    ", "Texto corto", "Esta descripción es tan larga que supera ampliamente los setenta caracteres permitidos en la regla."),
@@ -117,7 +117,7 @@ public class Test1 extends ReflexiveTest{
         r.setLicenseNumber("ABCD123456");
         r.setCertificationDate(LocalDate.of(2023, 1, 1));
         r.setCertifiedBy(createValidFederation(em));
-        r.setAssignedTo(List.of(createValidChessEvent()));
+        r.setAssignedTo(List.of(createValidChessEvent(em)));
         return r;
     }
 
@@ -141,19 +141,21 @@ public class Test1 extends ReflexiveTest{
         return rule;
     }   
 
-    public static ChessEvent createValidChessEvent() {
+    public static ChessEvent createValidChessEvent(EntityManager em) {
         ChessEvent e = new ChessEvent();
         e.setName("Campeonato Mundial de Ajedrez 2025");
         e.setDate(LocalDate.of(2025, 12, 9));
         e.setCategory(EventCategory.WORLD);
-        e.setParticipant(List.of(createValidParticipant("Magnus Carlsen"), createValidParticipant("Ian Nepomniachtchi")));
+        e.setParticipant(List.of(createValidParticipant(em, "Magnus Carlsen"), createValidParticipant(em, "Ian Nepomniachtchi")));
         e.setApplies(List.of());
         return e;
     }
 
-    public static User createValidParticipant(String name){
+    public static User createValidParticipant(EntityManager em, String name){
         Authorities a1=new Authorities();
         a1.setAuthority("PLAYER");
+        em.persist(a1);
+
         User u1=new User();
         setValue(u1,"username",String.class,name);
         setValue(u1, "authority", Authorities.class, a1);
@@ -165,9 +167,19 @@ public class Test1 extends ReflexiveTest{
         s.setDescription("Suspensión de 3 años por uso de dispositivo electrónico.");
         s.setType(SanctionType.PENALTY_TIME);
         s.setMonetaryFine(0.01);
-        s.setImposedBy(createValidReferee(em));
-        s.setImposedOn(createValidParticipant("Judit Polgar"));
-        s.setRuleBroken(createValidRule(em, "Uso de Dispositivos Electrónicos"));
+        
+        Referee r = createValidReferee(em);
+        em.persist(r);
+        s.setImposedBy(r);
+
+        User u = createValidParticipant(em, "Judit Polgar");
+        em.persist(u);
+        s.setImposedOn(u);
+
+        Rule rule = createValidRule(em, "Uso de Dispositivos Electrónicos");
+        em.persist(rule);
+        s.setRuleBroken(rule);
+        
         return s;
     }
 
