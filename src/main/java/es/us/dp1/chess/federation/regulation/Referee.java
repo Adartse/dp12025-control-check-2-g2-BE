@@ -28,10 +28,10 @@ public class Referee extends NamedEntity {
     @NotNull
     LocalDate certificationDate;
     
-    @Transient
+    @ManyToOne
+    @NotNull
     Federation certifiedBy; 
 
-    @Transient
+    @ManyToMany
     List<ChessEvent> assignedTo; 
-
 }

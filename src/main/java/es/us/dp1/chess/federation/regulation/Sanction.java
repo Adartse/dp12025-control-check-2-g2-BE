@@ -33,13 +33,16 @@ public class Sanction extends BaseEntity{
     @NotNull
     SanctionType type;
 
-    @Transient
+    @ManyToOne
+    @NotNull
     Referee imposedBy;
 
-    @Transient
+    @ManyToOne
+    @NotNull
     User imposedOn;
 
-    @Transient
+    @ManyToOne
+    @NotNull
     Rule ruleBroken;
     
 
