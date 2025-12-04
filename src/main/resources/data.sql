@@ -307,4 +307,23 @@ INSERT INTO chess_event_participant (chess_event_id, participant_id) VALUES
   (4,5),(4,6),(4,7),(4,10),(4,11),(4,12),(4,13),
   (5,4),(5,5),(5,8),(5,9),(5,10),(5,12);
 
--- -- Me faltan datos para federation_organizes.
+
+-------------------------------------------------------------------------------------------
+-- SOLUTION INSERT TEST 2 ----------------------------------------------------------------
+INSERT INTO referee (id, name, license_number, certification_date, certified_by_id) 
+VALUES 
+  (1, 'John Peterson', 'REF2025001', '2000-01-06', 2), 
+  (2, 'María González', 'REF2025002', '1998-12-14', 3); 
+
+INSERT INTO sanction (id, description, monetary_fine, type, rule_broken_id, imposed_by_id, imposed_on_id)
+VALUES (1, 'Unsportsmanlike conduct. Disrespect toward an opponent.', 500.00, 'EXPULSION', 36, 2, 9); 
+
+INSERT INTO sanction (id, description, type, imposed_by_id, imposed_on_id)
+VALUES (2, 'The player arrived late to the playing area.', 'WARNING', 1, 6); 
+
+--
+
+INSERT INTO referee_assigned_to (referee_id, assigned_to_id) 
+  VALUES (1, 3), (1, 4), (1, 5), (1, 6), 
+         (2, 3), (2, 4), (2, 7); 
+

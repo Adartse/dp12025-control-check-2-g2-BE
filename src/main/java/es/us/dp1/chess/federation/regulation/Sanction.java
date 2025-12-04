@@ -42,7 +42,6 @@ public class Sanction extends BaseEntity{
     User imposedOn;
 
     @ManyToOne
-    @NotNull
     Rule ruleBroken;
     
 
