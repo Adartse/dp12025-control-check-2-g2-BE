@@ -246,7 +246,14 @@ INSERT INTO chess_event (id, name, date, category, federation_id) VALUES
   (6, 'European Chess Education Conference 2025', '2025-10-12', 'REGIONAL', 2),
   (7, 'Spanish Chess Training Seminar 2025', '2025-04-18', 'NATIONAL', 3),
   (8, 'European Coaching & Strategy Forum 2025', '2025-05-22', 'REGIONAL', 2),
-  (9, 'Spanish Conference on Modern Chess Theory 2025', '2025-03-09', 'NATIONAL', 3);
+  (9, 'Spanish Conference on Modern Chess Theory 2025', '2025-03-09', 'NATIONAL', 3),
+  (10, 'European Youth Blitz Cup 2025', '2025-11-22', 'REGIONAL', 2),
+  (11, 'European Senior Classic 2025', '2025-12-03', 'REGIONAL', 2),
+  (12, 'European Team Rapid Challenge 2025', '2025-10-29', 'REGIONAL', 2),
+  (13, 'European Invitational Masters 2025', '2025-09-27', 'REGIONAL', 2),
+  (14, 'Spanish Rapid Teams Cup 2025', '2025-11-12', 'NATIONAL', 3),
+  (15, 'Spanish Classical University Open 2025', '2025-10-06', 'NATIONAL', 3),
+  (16, 'Spanish Autumn Blitz Festival 2025', '2025-12-18', 'NATIONAL', 3);
 
 -- rules applied in events
 INSERT INTO chess_event_applies (applies_id, chess_event_id) VALUES
@@ -296,15 +303,54 @@ INSERT INTO chess_event_applies (applies_id, chess_event_id) VALUES
   (44, 4),
   (47, 4),
   (48, 4),
-  (49, 4);
+  (49, 4), 
+
+  (15, 6),
+  (16, 6),
+  (17, 6),
+  (18, 6),
+  (19, 6),
+
+  (20, 11),
+  (21, 11),
+  (22, 11), 
+
+  (23, 12),
+  (24, 12),
+  (25, 12),
+  (26, 12),
+  (27, 12),
+  (28, 12),
+
+  (30, 15),
+  (31, 15),
+  (32, 15),
+  (33, 15),
+  (34, 15),
+  (35, 15),
+  (36, 15),
+  (37, 15),
+  (38, 15),
+  (39, 15),
+  (40, 15),
+  (41, 15);
 
 
 -- participants in events
 INSERT INTO chess_event_participant (chess_event_id, participant_id) VALUES
-  (1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11), 
+  (1,4),(1,5),(1,6),(1,7),(1,9),(1,10),(1,11), 
   (2,6),(2,7),(2,8),(2,9),(2,10),(2,12),(2,13),
   (3,4),(3,6),(3,8),(3,9),(3,11),(3,13),
   (4,5),(4,6),(4,7),(4,10),(4,11),(4,12),(4,13),
-  (5,4),(5,5),(5,8),(5,9),(5,10),(5,12);
+  (5,4),(5,5),(5,8),(5,9),(5,10),
+  (10,4),(10,6),(10,9),
+  (11,5),(11,7),(11,8),(11,10),(11,13),
+  (12,6),(12,11),
+  (13,4),(13,5),(13,7),(13,9),(13,10),(13,12),
+  (14,9),(14,13),
+  (15,4),(15,6),
+  (16,5),(16,9),(16,10);
+
+-- --- ,(1,8), (14,8), (16,8),(14,11),(16,11),(5,12),(15,12)
 
 -- -- Me faltan datos para federation_organizes.
